@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/propawan/contestBackend/issues"
   },
-  "homepage": "https://github.com/propawan/contestBackend#readme"
+  "homepage": "https://github.com/propawan/contestBackend#readme",
+  "dependencies": {
+    "mongoose": "^6.3.4"
+  }
 }
