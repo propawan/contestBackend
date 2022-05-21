@@ -14,12 +14,12 @@ const ScoreSchema = new mongoose.Schema({
   },
   userScore: {
     type: Number,
-    default:0
+    default: 0,
   },
   correctQuestions: {
     type: Number,
-    default:0
-  }
+    default: 0,
+  },
 });
 
 module.exports = mongoose.model("Score", ScoreSchema);

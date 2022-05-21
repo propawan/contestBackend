@@ -26,9 +26,9 @@ const ContestSchema = new mongoose.Schema({
     trim: true,
     maxlength: [200, "Profile Description can't be more than 200 chars long"],
   },
-  contestDataAndTime: {
+  contestDateAndTime: {
     type: Date,
-    required: [true, "must provide Contest Data And Time"],
+    required: [true, "must provide Contest Date And Time"],
   },
 });
 
