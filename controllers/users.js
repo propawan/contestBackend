@@ -10,7 +10,7 @@ const getUser = async (req, res) => {
   const { id: userId } = req.params;
   const user = await User.findOne({ _id: userId });
   if (!user) {
-    return next(createCustomError(`No user with id ${userId}`, 404));
+    throw createCustomError(`No user with id ${userId}`, 404);
   }
   return res.status(200).json({ user });
 };
