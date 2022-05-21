@@ -4,8 +4,10 @@ require("express-async-errors");
 const mongoose = require("mongoose");
 const express = require("express");
 const app = express();
+const users = require("./routes/users");
 
 app.use(express.json());
+app.use("/api/v1/users", users);
 
 const port = process.env.PORT || 3000;
 
