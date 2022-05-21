@@ -5,9 +5,11 @@ const mongoose = require("mongoose");
 const express = require("express");
 const contestDemo=require("./routes/route");
 const app = express();
-
+const contests = require("./routes/contests");
 app.use(express.json());
 app.use("/demo",contestDemo);
+
+app.use("/demo", contests);
 
 const port = process.env.PORT || 3000;
 
