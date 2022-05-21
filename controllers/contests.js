@@ -1,7 +1,5 @@
-const demoFunction=((req,res) =>{
+const demoFunction = (req, res) => {
+  return res.send("Hello World " + req.params.id);
+};
 
-  return res.send("Hello World "+req.params.id);
-
-})
-
-module.exports=demoFunction;
+module.exports = demoFunction;
