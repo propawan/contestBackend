@@ -6,10 +6,12 @@ const express = require("express");
 const contestRouter = require("./routes/contests");
 const app = express();
 const users = require("./routes/users");
+const score = require("./routes/score");
 
 app.use(express.json());
 app.use("/api/v1/contests", contestRouter);
 app.use("/api/v1/users", users);
+app.use("/api/v1/score", score);
 
 const port = process.env.PORT || 3000;
 
