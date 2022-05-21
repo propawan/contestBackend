@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const TaskSchema = new mongoose.Schema({
+const ContestSchema = new mongoose.Schema({
   contestName: {
     type: String,
     required: [true, "must provide Contest Name"],
