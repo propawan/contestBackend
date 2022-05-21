@@ -6,11 +6,13 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: [true, "must provide name"],
     trim: true,
+    maxlength: [30, "User Full name can't be greater than 30 characters."],
   },
   userName: {
     type: String,
     required: [true, "must provide username."],
     trim: true,
+    maxlength: [20, "Username can't be greater than 30 characters."],
   },
   email: {
     type: String,
