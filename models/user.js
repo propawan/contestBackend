@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
+const { userTypes } = require("../utils/constants");
 
 const UserSchema = new mongoose.Schema({
   name: {
@@ -41,6 +42,12 @@ const UserSchema = new mongoose.Schema({
   yoe: {
     type: Number,
     required: true,
+  },
+  userType: {
+    type: String,
+    required: true,
+    enum: [userTypes.admin, userTypes.participant],
+    default: userTypes.participant,
   },
 });
 
