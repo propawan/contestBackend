@@ -1,3 +1,4 @@
+const { createCustomError } = require("../errors/custom-error");
 const User = require("../models/user");
 
 const createUser = async (req, res) => {
@@ -5,4 +6,13 @@ const createUser = async (req, res) => {
   return res.status(201).json({ user });
 };
 
-module.exports = { createUser };
+const getUser = async (req, res) => {
+  const { id: userId } = req.params;
+  const user = await User.findOne({ _id: userId });
+  if (!user) {
+    return next(createCustomError(`No user with id ${userId}`, 404));
+  }
+  return res.status(200).json({ user });
+};
+
+module.exports = { createUser, getUser };
