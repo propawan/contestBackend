@@ -28,7 +28,7 @@ const UserSchema = new mongoose.Schema({
     required: [true, "must provide password."],
   },
   contact: {
-    type: Number,
+    type: String,
     required: [true, "must provide contact."],
     validate: [validator.isMobilePhone, "invalid contact."],
   },
