@@ -4,13 +4,13 @@ const ScoreSchema = new mongoose.Schema({
     type: String,
     required: true,
     trim: true,
-    maxlength: [50, "contest name can't be more than 50 chars long"]
+    maxlength: [50, "contest name can't be more than 50 chars long"],
   },
   userName: {
     type: String,
     required: true,
     trim: true,
-    maxlength: [20, "user name can't be more than 20 chars long"]
+    maxlength: [20, "user name can't be more than 20 chars long"],
   },
   userScore: {
     type: Number,
@@ -19,6 +19,10 @@ const ScoreSchema = new mongoose.Schema({
   correctQuestions: {
     type: Number,
     default: 0,
+  },
+  contestId: {
+    type: mongoose.SchemaTypes.ObjectId,
+    required: [true, "Please provide contest id."],
   },
 });
 
