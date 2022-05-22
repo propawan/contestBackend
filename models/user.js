@@ -31,7 +31,13 @@ const UserSchema = new mongoose.Schema({
   contact: {
     type: String,
     required: [true, "must provide contact."],
-    validate: [validator.isMobilePhone, "invalid contact."],
+    validate: {
+      validator: (value) => {
+        if (!validator.isMobilePhone(value)) {
+          throw new Error(`Mobile phone number ${value} is not valid`);
+        }
+      },
+    },
   },
   linkedinUrl: {
     type: String,
