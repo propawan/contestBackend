@@ -27,14 +27,11 @@ const getUserContests = async (req, res) => {
   if (scores.length == 0) {
     return res.status(200).json({ message: "No Contests Registered yet." });
   }
-  const contests = [];
+  const contestNames = [];
   for (let i = 0; i < scores.length; i++) {
-    const contestId = scores[i].contestId;
-    console.log(contestId);
-    const contest = await Contest.findOne({ _id: contestId });
-    contests.push(contest.contestName);
+    contestNames.push(scores[i].contestName);
   }
-  return res.status(200).json({ contests });
+  return res.status(200).json({ contestNames });
 };
 
 module.exports = { createUser, getUser, getUserContests };
