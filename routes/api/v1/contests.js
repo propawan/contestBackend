@@ -1,9 +1,13 @@
 const express = require("express");
 const router = express.Router();
-const { createContest } = require("../../../controllers/contests");
+const {
+  createContest,
+  getContest,
+  getAllContest,
+} = require("../../../controllers/contests");
 
-router.route("/").post(createContest);
+router.route("/").post(createContest).get(getAllContest);
 
-router.route("/:id").get();
+router.route("/:id").get(getContest);
 
 module.exports = router;
