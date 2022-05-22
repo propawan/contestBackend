@@ -14,6 +14,7 @@ const UserSchema = new mongoose.Schema({
     required: [true, "must provide username."],
     trim: true,
     maxlength: [20, "Username can't be greater than 20 characters."],
+    unique: true,
   },
   email: {
     type: String,
@@ -31,7 +32,13 @@ const UserSchema = new mongoose.Schema({
   contact: {
     type: String,
     required: [true, "must provide contact."],
-    validate: [validator.isMobilePhone, "invalid contact."],
+    validate: {
+      validator: (value) => {
+        if (!validator.isMobilePhone(value)) {
+          throw new Error(`Mobile phone number ${value} is not valid`);
+        }
+      },
+    },
   },
   linkedinUrl: {
     type: String,

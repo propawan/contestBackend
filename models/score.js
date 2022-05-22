@@ -20,6 +20,10 @@ const ScoreSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  contestId: {
+    type: mongoose.SchemaTypes.ObjectId,
+    required: [true, "Please provide contest id."],
+  },
 });
 
 module.exports = mongoose.model("Score", ScoreSchema);
