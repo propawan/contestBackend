@@ -1,5 +1,7 @@
 const { createCustomError } = require("../errors/custom-error");
 const User = require("../models/user");
+const Score = require("../models/score");
+const Contest = require("../models/contest");
 
 const createUser = async (req, res) => {
   const user = await User.create(req.body);
@@ -15,4 +17,24 @@ const getUser = async (req, res) => {
   return res.status(200).json({ user });
 };
 
-module.exports = { createUser, getUser };
+const getUserContests = async (req, res) => {
+  const { userName: reqUserName } = req.query;
+  const user = await User.findOne({ userName: reqUserName });
+  if (user == null) {
+    throw createCustomError(`User name ${reqUserName} does not exist`, 404);
+  }
+  const scores = await Score.find({ userName: reqUserName });
+  if (scores.length == 0) {
+    return res.status(200).json({ message: "No Contests Registered yet." });
+  }
+  const contests = [];
+  for (let i = 0; i < scores.length; i++) {
+    const contestId = scores[i].contestId;
+    console.log(contestId);
+    const contest = await Contest.findOne({ _id: contestId });
+    contests.push(contest.contestName);
+  }
+  return res.status(200).json({ contests });
+};
+
+module.exports = { createUser, getUser, getUserContests };
