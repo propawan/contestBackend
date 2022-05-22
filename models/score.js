@@ -2,15 +2,15 @@ const mongoose = require("mongoose");
 const ScoreSchema = new mongoose.Schema({
   contestName: {
     type: String,
-    required: [true],
+    required: true,
     trim: true,
-    maxlength: [200, "contest name can't be more than 200 chars long"],
+    maxlength: [50, "contest name can't be more than 50 chars long"],
   },
   userName: {
     type: String,
-    required: [true],
+    required: true,
     trim: true,
-    maxlength: [200, "user name can't be more than 200 chars long"],
+    maxlength: [20, "user name can't be more than 20 chars long"],
   },
   userScore: {
     type: Number,
