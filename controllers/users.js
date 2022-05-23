@@ -37,9 +37,13 @@ const signIn = async (req, res) => {
   if (!isPasswordValid) {
     throw new UnauthenticatedError("Password is incorrect");
   }
-  const token = jwt.sign({ id: user._id, userName }, process.env.JWT_SECRET, {
-    expiresIn: "30d",
-  });
+  const token = jwt.sign(
+    { id: user._id, userName: user.userName, userType: user.userType },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: "30d",
+    }
+  );
   res.status(200).json({ msg: "User signed in", token });
 };
 
