@@ -44,27 +44,17 @@ const getAllParticipants = async (req, res) => {
 };
 
 const getOnGoingContest = async (req, res) => {
-  const contests = await Contest.find({});
   let today = new Date();
-  let todayDate = new Date(
-    today.getFullYear(),
-    today.getMonth(),
-    today.getDate(),
-    0,
-    0,
-    0,
-    0
-  );
+  let todayDate = new Date();
+  todayDate.setHours(0, 0, 0, 0);
 
-  console.log(today);
-  console.log(today.getTime());
+  const contests = await Contest.find({});
 
-  console.log(todayDate);
-  console.log(todayDate.getTime());
-  let onGoingContest = contests.filter(function (cn, i) {
+  let onGoingContest = contests.filter((cn) => {
+    let contestTimestamp = cn.contestDateAndTime.getTime();
     return (
-      cn.contestDateAndTime.getTime() >= todayDate.getTime() &&
-      cn.contestDateAndTime.getTime() <= today.getTime()
+      contestTimestamp >= todayDate.getTime() + 19800000 &&
+      contestTimestamp <= today.getTime() + 19800000
     );
   });
 
