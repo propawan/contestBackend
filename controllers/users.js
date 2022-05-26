@@ -65,4 +65,28 @@ const signIn = async (req, res) => {
   res.status(200).json({ msg: "User signed in", token });
 };
 
-module.exports = { createUser, getUser, signIn, getUserContests };
+const updateUserInfo = async (req, res) => {
+  const { id: userId } = req.user;
+  const user = await User.findOne({ _id: userId });
+  user.email = req.body.email == undefined ? user.email : req.body.email;
+  user.contact =
+    req.body.contact == undefined ? user.contact : req.body.contact;
+  user.linkedinUrl =
+    req.body.linkedinUrl == undefined ? user.linkedinUrl : req.body.linkedinUrl;
+  user.githubUrl =
+    req.body.githubUrl == undefined ? user.githubUrl : req.body.githubUrl;
+  user.yoe = req.body.yoe == undefined ? user.yoe : req.body.yoe;
+  const updatedUser = await User.findOneAndUpdate({ _id: userId }, user, {
+    new: true,
+    runValidators: true,
+  });
+  return res.status(200).json({ updatedUser });
+};
+
+module.exports = {
+  createUser,
+  getUser,
+  signIn,
+  getUserContests,
+  updateUserInfo,
+};
