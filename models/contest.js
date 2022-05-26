@@ -30,6 +30,9 @@ const ContestSchema = new mongoose.Schema({
     type: Date,
     required: [true, "must provide Contest Date And Time"],
   },
+  users: {
+    type: [mongoose.SchemaTypes.ObjectId],
+  },
 });
 
 module.exports = mongoose.model("Contest", ContestSchema);

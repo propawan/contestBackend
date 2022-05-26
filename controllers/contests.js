@@ -1,3 +1,4 @@
+const BadRequest = require("../errors/bad-request");
 const Contest = require("../models/contest");
 const Score = require("../models/score");
 const createContest = async (req, res) => {
@@ -20,4 +21,27 @@ const getContestUsers = async (req, res) => {
   return res.status(200).json({ userScores });
 };
 
-module.exports = { createContest, getContestUsers };
+const registerInContest = async (req, res) => {
+  const { id: userId } = req.user;
+  const { contestId } = req.params;
+  const contest = await Contest.findOne({ _id: contestId });
+  if (contest == null || userId == null) {
+    throw new BadRequest("Please provide correct contest id and userId.");
+  }
+  if (contest.users && contest.users.includes(userId)) {
+    throw new BadRequest("User already registered.");
+  }
+  contest.users.push(userId);
+  const updatedContest = await Contest.findOneAndUpdate(
+    { _id: contestId },
+    contest,
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+
+  return res.status(200).json({ updatedContest });
+};
+
+module.exports = { createContest, registerInContest, getContestUsers };
