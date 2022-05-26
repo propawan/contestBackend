@@ -20,7 +20,7 @@ const createScore = async (req, res) => {
   const ScoreObject = await Score.findOne({userName:reqUserName,contestId:reqContestId});
   if(ScoreObject!=null)
   {
-    throw createCustomError(`User name:- ${reqUserName} is already registered under the Contest Name:- ${reqContestName}`, 404);
+    throw createCustomError(`User score already recorded.`, 404);
   }
   const score = await Score.create(req.body);
   return res.status(201).json({ score });
