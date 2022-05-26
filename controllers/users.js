@@ -3,6 +3,7 @@ const BadRequest = require("../errors/bad-request");
 const { createCustomError } = require("../errors/custom-error");
 const UnauthenticatedError = require("../errors/unauthenticated");
 const User = require("../models/user");
+const Score = require("../models/score");
 const jwt = require("jsonwebtoken");
 
 const createUser = async (req, res) => {
@@ -22,6 +23,23 @@ const getUser = async (req, res) => {
     throw createCustomError(`No user with id ${userId}`, 404);
   }
   return res.status(200).json({ user });
+};
+
+const getUserContests = async (req, res) => {
+  const { userName: reqUserName } = req.query;
+  const user = await User.findOne({ userName: reqUserName });
+  if (user == null) {
+    throw createCustomError(`User name ${reqUserName} does not exist`, 404);
+  }
+  const scores = await Score.find({ userName: reqUserName });
+  if (scores.length == 0) {
+    return res.status(200).json({ message: "No Contests Registered yet." });
+  }
+  const contestNames = [];
+  for (let i = 0; i < scores.length; i++) {
+    contestNames.push(scores[i].contestName);
+  }
+  return res.status(200).json({ contestNames });
 };
 
 const signIn = async (req, res) => {
@@ -47,4 +65,28 @@ const signIn = async (req, res) => {
   res.status(200).json({ msg: "User signed in", token });
 };
 
-module.exports = { createUser, getUser, signIn };
+const updateUserInfo = async (req, res) => {
+  const { id: userId } = req.user;
+  const user = await User.findOne({ _id: userId });
+  user.email = req.body.email == undefined ? user.email : req.body.email;
+  user.contact =
+    req.body.contact == undefined ? user.contact : req.body.contact;
+  user.linkedinUrl =
+    req.body.linkedinUrl == undefined ? user.linkedinUrl : req.body.linkedinUrl;
+  user.githubUrl =
+    req.body.githubUrl == undefined ? user.githubUrl : req.body.githubUrl;
+  user.yoe = req.body.yoe == undefined ? user.yoe : req.body.yoe;
+  const updatedUser = await User.findOneAndUpdate({ _id: userId }, user, {
+    new: true,
+    runValidators: true,
+  });
+  return res.status(200).json({ updatedUser });
+};
+
+module.exports = {
+  createUser,
+  getUser,
+  signIn,
+  getUserContests,
+  updateUserInfo,
+};
