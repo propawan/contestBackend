@@ -4,7 +4,7 @@ const {
   createContest,
   registerInContest,
   getContestUsers,
-  getUpcomingContests
+  getUpcomingContests,
 } = require("../../../controllers/contests");
 const authenticationMiddleware = require("../../../middlewares/auth");
 
