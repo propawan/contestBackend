@@ -16,7 +16,7 @@ const getContestUsers = async (req, res) => {
   }
   const userScores = [];
   for (let i = 0; i < scores.length; i++) {
-    userScores.push({ "Name": scores[i].userName, "Score" : scores[i].userScore });
+    userScores.push({ Name: scores[i].userName, Score: scores[i].userScore });
   }
   return res.status(200).json({ userScores });
 };
@@ -44,4 +44,27 @@ const registerInContest = async (req, res) => {
   return res.status(200).json({ updatedContest });
 };
 
-module.exports = { createContest, registerInContest, getContestUsers };
+const getUpcomingContests = async (req, res) => {
+  const contests = await Contest.find({});
+  const contestNames = [];
+  let currentDate = new Date();
+  for (let i = 0; i < contests.length; i++) {
+    if (
+      contests[i].contestDateAndTime.getTime() >
+      currentDate.getTime() + 19800000
+    ) {
+      contestNames.push(contests[i].contestName);
+    }
+  }
+  if (contestNames.length == 0) {
+    return res.status(200).json({ message: "No Upcoming Contests" });
+  }
+  return res.status(200).json({ contestNames });
+};
+
+module.exports = {
+  createContest,
+  registerInContest,
+  getContestUsers,
+  getUpcomingContests,
+};
