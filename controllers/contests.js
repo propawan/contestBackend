@@ -44,4 +44,22 @@ const registerInContest = async (req, res) => {
   return res.status(200).json({ updatedContest });
 };
 
-module.exports = { createContest, registerInContest, getContestUsers };
+const getUpcomingContests = async (req, res) => {
+  const contests = await Contest.find({});
+  const contestNames = [];
+  let currentDate = new Date();
+  for (let i = 0; i < contests.length; i++) {
+    if(contests[i].contestDateAndTime>currentDate)
+    {
+      contestNames.push(contests[i].contestName);
+    }
+  }
+  if (contestNames.length == 0) {
+    return res.status(200).json({ message: "No Upcoming Contests" });
+  }
+  console.log(currentDate);
+  return res.status(200).json({ contestNames });
+};
+
+
+module.exports = { createContest, registerInContest, getContestUsers, getUpcomingContests };
