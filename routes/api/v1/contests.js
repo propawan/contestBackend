@@ -7,11 +7,13 @@ const {
   getUpcomingContests,
   getRegisteredUsers,
   getContest,
+  getOnGoingContest,
 } = require("../../../controllers/contests");
 const authenticationMiddleware = require("../../../middlewares/auth");
 
 router.route("/").post(authenticationMiddleware, createContest);
 router.route("/upComingContests").get(getUpcomingContests);
+router.route("/onGoingContests").get(getOnGoingContest);
 router
   .route("/register/:contestId")
   .post(authenticationMiddleware, registerInContest);

@@ -85,6 +85,24 @@ const getRegisteredUsers = async (req, res) => {
   return res.status(200).json({ registeredUsers });
 };
 
+const getOnGoingContest = async (req, res) => {
+  let today = new Date();
+  let todayDate = new Date();
+  todayDate.setHours(0, 0, 0, 0);
+
+  const contests = await Contest.find({});
+
+  let onGoingContest = contests.filter((cn) => {
+    let contestTimestamp = cn.contestDateAndTime.getTime();
+    return (
+      contestTimestamp >= todayDate.getTime() + 19800000 &&
+      contestTimestamp <= today.getTime() + 19800000
+    );
+  });
+
+  return res.json({ onGoingContest });
+};
+
 module.exports = {
   createContest,
   registerInContest,
@@ -92,4 +110,5 @@ module.exports = {
   getUpcomingContests,
   getRegisteredUsers,
   getContest,
+  getOnGoingContest,
 };
