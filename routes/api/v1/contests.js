@@ -6,6 +6,7 @@ const {
   getContestUsers,
   getUpcomingContests,
   getRegisteredUsers,
+  getContest,
 } = require("../../../controllers/contests");
 const authenticationMiddleware = require("../../../middlewares/auth");
 
@@ -14,6 +15,7 @@ router.route("/upComingContests").get(getUpcomingContests);
 router
   .route("/register/:contestId")
   .post(authenticationMiddleware, registerInContest);
+router.route("/:id").get(getContest);
 router.route("/:id/userScores").get(getContestUsers);
 router.route("/:id/registeredUsers").get(getRegisteredUsers);
 

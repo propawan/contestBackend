@@ -2,9 +2,21 @@ const BadRequest = require("../errors/bad-request");
 const Contest = require("../models/contest");
 const Score = require("../models/score");
 const User = require("../models/user");
+
 const createContest = async (req, res) => {
   const contest = await Contest.create(req.body);
   return res.status(201).json({ contest });
+};
+
+const getContest = async (req, res) => {
+  const { id } = req.params;
+  let contest = await Contest.findOne({ _id: id });
+
+  if (contest == null || contest.length == 0) {
+    return res.status(404).json({ message: "Cannot find Contest" });
+  }
+
+  return res.status(200).json({ contest });
 };
 
 const getContestUsers = async (req, res) => {
@@ -79,4 +91,5 @@ module.exports = {
   getContestUsers,
   getUpcomingContests,
   getRegisteredUsers,
+  getContest,
 };
