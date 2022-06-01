@@ -1,6 +1,7 @@
 const BadRequest = require("../errors/bad-request");
 const Contest = require("../models/contest");
 const Score = require("../models/score");
+const User = require("../models/user");
 const createContest = async (req, res) => {
   const contest = await Contest.create(req.body);
   return res.status(201).json({ contest });
@@ -62,9 +63,20 @@ const getUpcomingContests = async (req, res) => {
   return res.status(200).json({ contestNames });
 };
 
+const getRegisteredUsers = async (req, res) => {
+  const { id: contestId } = req.params;
+  const contest = await Contest.findOne({ _id: contestId });
+  if (contest == null) {
+    throw new BadRequest("Please provide correct contest id .");
+  }
+  const registeredUsers = await User.find({ _id: { $in: contest.users } });
+  return res.status(200).json({ registeredUsers });
+};
+
 module.exports = {
   createContest,
   registerInContest,
   getContestUsers,
   getUpcomingContests,
+  getRegisteredUsers,
 };
