@@ -1,11 +1,8 @@
 const { createCustomError } = require("../errors/custom-error");
-const contest = require("../models/contest");
 const Contest = require("../models/contest");
 const Score = require("../models/score");
 
 const BadRequest = require("../errors/bad-request");
-const Contest = require("../models/contest");
-const Score = require("../models/score");
 const createContest = async (req, res) => {
   const contest = await Contest.create(req.body);
   return res.status(201).json({ contest });
