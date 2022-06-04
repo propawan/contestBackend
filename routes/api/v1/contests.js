@@ -11,6 +11,9 @@ const {
   registerInContest,
   getContestUsers,
   getUpcomingContests,
+  getRegisteredUsers,
+  getContest,
+  getOnGoingContest,
 } = require("../../../controllers/contests");
 
 router.route("/onGoingContest").get(getOnGoingContest);
@@ -26,10 +29,13 @@ router.route("/").put(updateContest);
 const authenticationMiddleware = require("../../../middlewares/auth");
 
 router.route("/").post(authenticationMiddleware, createContest);
+router.route("/upComingContests").get(getUpcomingContests);
+router.route("/onGoingContests").get(getOnGoingContest);
 router
   .route("/register/:contestId")
   .post(authenticationMiddleware, registerInContest);
-router.route("/:id").get(getContestUsers);
-router.route("/features/upComingContests").get(getUpcomingContests);
+router.route("/:id").get(getContest);
+router.route("/:id/userScores").get(getContestUsers);
+router.route("/:id/registeredUsers").get(getRegisteredUsers);
 
 module.exports = router;
