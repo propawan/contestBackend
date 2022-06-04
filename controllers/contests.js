@@ -2,8 +2,13 @@ const { createCustomError } = require("../errors/custom-error");
 const Contest = require("../models/contest");
 const Score = require("../models/score");
 const User = require("../models/user");
+const { userTypes } = require("../utils/constants");
 
 const createContest = async (req, res) => {
+  const { userType } = req.user;
+  if (userType !== userTypes.admin) {
+    return createCustomError("You are not Authorized", 401);
+  }
   const contest = await Contest.create(req.body);
   return res.status(201).json({ contest });
 };
@@ -17,6 +22,52 @@ const getContest = async (req, res) => {
   }
 
   return res.status(200).json({ contest });
+};
+
+const updateContest = async (req, res) => {
+  const { userType } = req.user;
+  if (userType !== userTypes.admin) {
+    return createCustomError("You are not Authorized", 401);
+  }
+
+  const givenContest = req.body;
+  const contest = await Contest.findOne({ _id: givenContest._id });
+  contest.contestName =
+    givenContest.contestName == undefined
+      ? contest.contestName
+      : givenContest.contestName;
+  contest.companyName =
+    givenContest.companyName == undefined
+      ? contest.companyName
+      : givenContest.companyName;
+  contest.requiredExperience =
+    givenContest.requiredExperience == undefined
+      ? contest.requiredExperience
+      : givenContest.requiredExperience;
+  contest.totalQuestion =
+    givenContest.totalQuestion == undefined
+      ? contest.totalQuestion
+      : givenContest.totalQuestion;
+  contest.profileDescription =
+    givenContest.profileDescription == undefined
+      ? contest.profileDescription
+      : givenContest.profileDescription;
+  contest.contestDateAndTime =
+    givenContest.contestDateAndTime == undefined
+      ? contest.contestDateAndTime
+      : givenContest.contestDateAndTime;
+  contest.users =
+    givenContest.users == undefined ? contest.users : givenContest.users;
+
+  const updatedContest = await Contest.findOneAndUpdate(
+    { _id: givenContest._id },
+    contest,
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+  return res.status(200).json({ updatedContest });
 };
 
 const getContestUsers = async (req, res) => {
@@ -106,10 +157,7 @@ const getOnGoingContest = async (req, res) => {
 module.exports = {
   createContest,
   getContest,
-  getAllContest,
-  getAllParticipants,
   getOnGoingContest,
-  deleteContest,
   updateContest,
   registerInContest,
   getContestUsers,
